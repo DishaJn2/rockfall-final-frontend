@@ -1,24 +1,30 @@
-import logo from './logo.svg';
-import './App.css';
+// src/App.js
+import React from "react";
+import { Routes, Route } from "react-router-dom";
+
+import Login from "./components/Login";
+import Dashboard from "./components/Dashboard";
+import MineView from "./components/MineView";
+import AdminDashboard from "./components/AdminDashboard";
+import SupervisorDashboard from "./components/SupervisorDashboard";
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Routes>
+      {/* Login Page */}
+      <Route path="/" element={<Login />} />
+
+      {/* Field Worker Dashboard */}
+      <Route path="/dashboard" element={<Dashboard />} />
+
+<Route path="/mineview" element={<MineView />} />
+
+      {/* Admin Dashboard */}
+      <Route path="/admin-dashboard" element={<AdminDashboard />} />
+
+      {/* Supervisor Dashboard */}
+      <Route path="/supervisor-dashboard" element={<SupervisorDashboard />} />
+    </Routes>
   );
 }
 

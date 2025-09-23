@@ -1,0 +1,161 @@
+/* Layout */
+.dashboard-layout {
+  display: flex;
+  min-height: 100vh;
+  background: #f8f9fa;
+}
+
+.sidebar {
+  width: 220px;
+  background: #fff;
+  padding: 20px;
+  border-right: 1px solid #ddd;
+}
+
+.logo {
+  font-size: 20px;
+  font-weight: bold;
+  margin-bottom: 20px;
+}
+
+.user-info {
+  margin-bottom: 20px;
+  font-size: 14px;
+  color: gray;
+}
+
+.sidebar ul {
+  list-style: none;
+  padding: 0;
+}
+
+.sidebar li {
+  padding: 10px 0;
+  cursor: pointer;
+}
+
+.sidebar li.active {
+  font-weight: bold;
+  color: green;
+}
+
+.main-content {
+  flex: 1;
+  padding: 20px;
+}
+
+.dashboard-title {
+  font-size: 22px;
+  font-weight: bold;
+}
+
+.sub-text {
+  color: gray;
+  margin-bottom: 20px;
+}
+
+/* Cards */
+.top-overview {
+  display: flex;
+  gap: 15px;
+  margin-bottom: 20px;
+}
+
+.card {
+  flex: 1;
+  padding: 15px;
+  background: #fff;
+  border-radius: 8px;
+  text-align: center;
+  box-shadow: 0px 1px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* Colors */
+.card.risk.medium h3 { color: orange; }
+.card.alerts h3 { color: red; }
+.card.personnel h3 { color: purple; }
+.card.ai h3 { color: darkorange; }
+
+/* Sensor Section */
+.sensor-section {
+  background: #fff;
+  padding: 15px;
+  margin-bottom: 20px;
+  border-radius: 8px;
+}
+
+/* Bottom Section */
+.bottom-section {
+  display: flex;
+  gap: 20px;
+}
+
+.sector-overview,
+.alert-stream {
+  flex: 1;
+  background: #fff;
+  padding: 15px;
+  border-radius: 8px;
+}
+
+.alert {
+  padding: 10px;
+  margin-bottom: 10px;
+  border-radius: 5px;
+}
+
+.alert.urgent { background: #ffe5e5; border-left: 5px solid red; }
+.alert.warning { background: #fff3cd; border-left: 5px solid orange; }
+.alert.info { background: #e7f3ff; border-left: 5px solid blue; }
+.alert.ok { background: #e5ffe5; border-left: 5px solid green; }
+
+.tag {
+  float: right;
+  font-size: 12px;
+  font-weight: bold;
+  padding: 2px 8px;
+  border-radius: 4px;
+}
+
+/* === KPI extra styles === */
+.cards-row {
+  display: flex;
+  gap: 15px;
+  margin-bottom: 20px;
+}
+
+.card {
+  flex: 1;
+  background: white;
+  padding: 15px;
+  border-radius: 10px;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+  text-align: center;
+  font-weight: bold;
+}
+
+.charts-row {
+  display: flex;
+  gap: 15px;
+  margin-bottom: 20px;
+}
+
+.chart {
+  flex: 1;
+  background: white;
+  padding: 15px;
+  border-radius: 10px;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+}
+
+.alert {
+  padding: 8px;
+  margin-bottom: 8px;
+  border-radius: 5px;
+  font-size: 14px;
+}
+
+.tag.urgent { background: red; color: #fff; }
+.tag.warning { background: orange; color: #fff; }
+.tag.info { background: blue; color: #fff; }
+.tag.ok { background: green; color: #fff; }
