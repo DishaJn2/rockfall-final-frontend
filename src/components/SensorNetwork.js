@@ -1,79 +1,231 @@
 // src/components/SensorNetwork.js
-import React from "react";
+import React, { useEffect, useState } from "react";
+import { Line, Bar } from "react-chartjs-2";
 import {
-  LineChart,
-  Line,
-  XAxis,
-  YAxis,
-  CartesianGrid,
+  Chart as ChartJS,
+  LineElement,
+  PointElement,
+  CategoryScale,
+  LinearScale,
+  BarElement,
+  ArcElement,
   Tooltip,
   Legend,
-  BarChart,
-  Bar,
-  ResponsiveContainer,
-} from "recharts";
+  TimeScale,
+  Title,
+} from "chart.js";
+import "chartjs-adapter-date-fns";
 
-const SensorNetwork = () => {
-  // Dummy sensor data (Line chart ke liye)
-  const sensorData = [
-    { time: "00:00", Tiltmeter: 12, Piezometer: 18, Vibration: 10, Crackmeter: 22 },
-    { time: "06:00", Tiltmeter: 14, Piezometer: 20, Vibration: 9, Crackmeter: 21 },
-    { time: "12:00", Tiltmeter: 16, Piezometer: 22, Vibration: 11, Crackmeter: 20 },
-    { time: "18:00", Tiltmeter: 15, Piezometer: 19, Vibration: 12, Crackmeter: 19 },
-    { time: "24:00", Tiltmeter: 13, Piezometer: 17, Vibration: 10, Crackmeter: 18 },
-  ];
+ChartJS.register(
+  LineElement,
+  PointElement,
+  CategoryScale,
+  LinearScale,
+  BarElement,
+  ArcElement,
+  Tooltip,
+  Legend,
+  TimeScale,
+  Title
+);
 
-  // Dummy sector-wise coverage (Bar chart ke liye)
-  const coverageData = [
-    { sector: "S1", sensors: 12 },
-    { sector: "S2", sensors: 14 },
-    { sector: "S3", sensors: 16 },
-    { sector: "S4", sensors: 18 },
-    { sector: "S5", sensors: 15 },
-    { sector: "S6", sensors: 20 },
-    { sector: "S7", sensors: 22 },
-  ];
+const Box = ({ title, children }) => (
+  <div className="bg-white p-4 rounded-lg shadow-md border border-gray-200">
+    {title && <h3 className="text-lg font-semibold mb-2">{title}</h3>}
+    {children}
+  </div>
+);
+
+// Progress bar component
+const ProgressBar = ({ value, threshold }) => {
+  let percent = Math.min((value / threshold) * 100, 120); // cap at 120%
+  let color = "bg-green-500";
+  if (value >= threshold) color = "bg-red-500";       // Critical
+  else if (value >= threshold * 0.8) color = "bg-yellow-500"; // Warning
 
   return (
-    <div className="p-6">
-      <h2 className="text-xl font-bold mb-6">Sensor Network Dashboard</h2>
-
-      <div className="grid grid-cols-2 gap-6">
-        {/* Line Chart */}
-        <div className="bg-white shadow rounded-lg p-4">
-          <h3 className="text-lg font-semibold mb-4">Sensor Readings Trend (24h)</h3>
-          <ResponsiveContainer width="100%" height={300}>
-            <LineChart data={sensorData}>
-              <CartesianGrid strokeDasharray="3 3" />
-              <XAxis dataKey="time" />
-              <YAxis />
-              <Tooltip />
-              <Legend />
-              <Line type="monotone" dataKey="Tiltmeter" stroke="#8884d8" />
-              <Line type="monotone" dataKey="Piezometer" stroke="#82ca9d" />
-              <Line type="monotone" dataKey="Vibration" stroke="#ffc658" />
-              <Line type="monotone" dataKey="Crackmeter" stroke="#ff0000" />
-            </LineChart>
-          </ResponsiveContainer>
-        </div>
-
-        {/* Bar Chart */}
-        <div className="bg-white shadow rounded-lg p-4">
-          <h3 className="text-lg font-semibold mb-4">Sensor Network Coverage</h3>
-          <ResponsiveContainer width="100%" height={300}>
-            <BarChart data={coverageData}>
-              <CartesianGrid strokeDasharray="3 3" />
-              <XAxis dataKey="sector" />
-              <YAxis />
-              <Tooltip />
-              <Legend />
-              <Bar dataKey="sensors" fill="#8884d8" />
-            </BarChart>
-          </ResponsiveContainer>
-        </div>
-      </div>
+    <div className="w-full bg-gray-200 h-2 rounded mt-2">
+      <div className={`h-2 rounded ${color}`} style={{ width: `${percent}%` }}></div>
     </div>
   );
 };
 
-export default SensorNetwork;
+// Helper: random number near base
+const randomNear = (base, variance = 0.5) => {
+  return parseFloat((base + (Math.random() - 0.5) * variance).toFixed(2));
+};
+
+export default function SensorNetwork() {
+  const [sensorValues, setSensorValues] = useState({});
+  const [barData, setBarData] = useState([]);
+
+  useEffect(() => {
+    const generateData = () => {
+      setSensorValues({
+        tiltmeter: randomNear(2.3, 0.7), // threshold 5.0°
+        piezometer: randomNear(15, 2),   // threshold 18m
+        vibration: randomNear(1, 0.6),   // threshold 2 mm/s
+        crackmeter: randomNear(2.8, 1.5),// threshold 3 mm
+        weatherTemp: randomNear(12, 5),
+        weatherHumidity: randomNear(65, 10),
+        gnss: randomNear(2, 1.5),        // threshold ±5 cm
+      });
+
+      // Update bar graph synthetic data
+      setBarData([
+        randomNear(10, 3),
+        randomNear(12, 2),
+        randomNear(15, 3),
+        randomNear(9, 2),
+        randomNear(13, 2),
+        randomNear(14, 3),
+        randomNear(18, 2),
+      ]);
+    };
+
+    generateData();
+    const interval = setInterval(generateData, 5000); // update every 5s
+    return () => clearInterval(interval);
+  }, []);
+
+  // Line Graph Data (6 sensors)
+  const sensorLineData = {
+    labels: ["10:00", "16:00", "22:00", "04:00", "10:00", "14:00"],
+    datasets: [
+      {
+        label: "Tiltmeter North (°)",
+        data: Array.from({ length: 6 }, () => randomNear(sensorValues.tiltmeter || 2.3, 1)),
+        borderColor: "blue",
+        tension: 0.4,
+      },
+      {
+        label: "Piezometer West (m)",
+        data: Array.from({ length: 6 }, () => randomNear(sensorValues.piezometer || 15, 2)),
+        borderColor: "orange",
+        tension: 0.4,
+      },
+      {
+        label: "Vibration East (mm/s)",
+        data: Array.from({ length: 6 }, () => randomNear(sensorValues.vibration || 1, 0.5)),
+        borderColor: "green",
+        tension: 0.4,
+      },
+      {
+        label: "Crackmeter South (mm)",
+        data: Array.from({ length: 6 }, () => randomNear(sensorValues.crackmeter || 2.8, 1)),
+        borderColor: "red",
+        tension: 0.4,
+      },
+      {
+        label: "Weather Temp (°C)",
+        data: Array.from({ length: 6 }, () => randomNear(sensorValues.weatherTemp || 12, 3)),
+        borderColor: "purple",
+        borderDash: [5, 5], // dotted line
+        tension: 0.4,
+      },
+      {
+        label: "GNSS Movement (cm)",
+        data: Array.from({ length: 6 }, () => randomNear(sensorValues.gnss || 2, 1)),
+        borderColor: "brown",
+        tension: 0.4,
+      },
+    ],
+  };
+
+  const sensorLineOptions = {
+    responsive: true,
+    plugins: {
+      legend: { position: "bottom" },
+      title: { display: true, text: "Sensor Readings (Last 24h)" },
+    },
+    scales: {
+      x: { title: { display: true, text: "Time (hh:mm)" } },
+      y: { title: { display: true, text: "Sensor Values" } },
+    },
+  };
+
+  // Bar Graph Data (active vs total)
+  const sensorBarData = {
+    labels: ["S1", "S2", "S3", "S4", "S5", "S6", "S7"],
+    datasets: [
+      {
+        label: "Active Sensors",
+        data: barData.length ? barData : [10, 12, 15, 9, 13, 14, 18],
+        backgroundColor: "black",
+      },
+      {
+        label: "Total Capacity",
+        data: [12, 13, 16, 12, 15, 17, 20],
+        backgroundColor: "gray",
+      },
+    ],
+  };
+
+  const sensorBarOptions = {
+    responsive: true,
+    plugins: {
+      legend: { position: "bottom" },
+      title: { display: true, text: "Sensor Network Coverage" },
+    },
+    scales: {
+      x: { title: { display: true, text: "Sensor Nodes" } },
+      y: { title: { display: true, text: "Count" }, beginAtZero: true },
+    },
+  };
+
+  return (
+    <div className="space-y-6">
+      <h2 className="text-2xl font-bold">Sensor Network Dashboard</h2>
+      <p className="text-gray-500">Synthetic real-time monitoring of all mine safety sensors</p>
+
+      {/* Graphs */}
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <Box title="Sensor Readings Trend (24h)">
+          <Line data={sensorLineData} options={sensorLineOptions} />
+        </Box>
+        <Box title="Sensor Network Coverage">
+          <Bar data={sensorBarData} options={sensorBarOptions} />
+        </Box>
+      </div>
+
+      {/* Sensor Cards */}
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <Box title="Tiltmeter Array">
+          <p>Current Value: {sensorValues.tiltmeter}°</p>
+          <p>Threshold: 5.0°</p>
+          <ProgressBar value={sensorValues.tiltmeter} threshold={5} />
+        </Box>
+
+        <Box title="Piezometer Network">
+          <p>Current Value: {sensorValues.piezometer}m</p>
+          <p>Threshold: 18.0m</p>
+          <ProgressBar value={sensorValues.piezometer} threshold={18} />
+        </Box>
+
+        <Box title="Vibration Sensors">
+          <p>Current Value: {sensorValues.vibration} mm/s</p>
+          <p>Threshold: 2.0 mm/s</p>
+          <ProgressBar value={sensorValues.vibration} threshold={2} />
+        </Box>
+
+        <Box title="Crackmeter System">
+          <p>Current Value: {sensorValues.crackmeter} mm</p>
+          <p>Threshold: 3.0 mm</p>
+          <ProgressBar value={sensorValues.crackmeter} threshold={3} />
+        </Box>
+
+        <Box title="Weather Station">
+          <p>Temperature: {sensorValues.weatherTemp}°C</p>
+          <p>Humidity: {sensorValues.weatherHumidity}%</p>
+          <ProgressBar value={sensorValues.weatherHumidity} threshold={100} />
+        </Box>
+
+        <Box title="GNSS Network">
+          <p>Movement ±{sensorValues.gnss} cm</p>
+          <p>Threshold ±5.0 cm</p>
+          <ProgressBar value={sensorValues.gnss} threshold={5} />
+        </Box>
+      </div>
+    </div>
+  );
+}

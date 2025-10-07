@@ -1,6 +1,6 @@
 // src/components/AdminDashboard.js
 import React, { useState } from "react";
-import { Line, Bar, Doughnut, Chart } from "react-chartjs-2";
+import { Line, Bar, Chart } from "react-chartjs-2";
 import {
   Chart as ChartJS,
   LineElement,
@@ -304,7 +304,6 @@ function AdminDashboard() {
             </div>
           </div>
         );
-
       case "sensor":
         return (
           <div className="space-y-6">
@@ -403,17 +402,15 @@ function AdminDashboard() {
             </div>
           </div>
         );
-
-      // ---------------- AI Predictive Section (FULL) ----------------
+      // ---------------- AI Predictive Section (MODIFIED: removed anomaly+ml boxes) ----------------
       case "ai":
         return (
           <div className="space-y-6">
             <h2 className="text-2xl font-bold">AI Predictive Analytics</h2>
             <p className="text-gray-500">Machine Learning-powered rockfall prediction system</p>
 
-            {/* 🔹 Top Summary Cards */}
-            <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
-              {/* Rockfall Probability */}
+            {/* 🔹 Top Summary Cards (kept, but Model Confidence & Active Anomalies removed) */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <Box title="Rockfall Probability">
                 <p className="text-orange-600 font-bold text-2xl">23%</p>
                 <p className="text-gray-600">Next 24 hours</p>
@@ -422,25 +419,9 @@ function AdminDashboard() {
                 </div>
               </Box>
 
-              {/* Predicted Event Window */}
               <Box title="Predicted Event Window">
                 <p className="text-blue-600 font-bold text-2xl">48-72 hours</p>
                 <p className="text-gray-600">High confidence range</p>
-              </Box>
-
-              {/* Model Confidence */}
-              <Box title="Model Confidence">
-                <p className="text-green-600 font-bold text-2xl">87%</p>
-                <p className="text-gray-600">Prediction accuracy</p>
-                <div className="w-full bg-gray-200 rounded-full h-2 mt-2">
-                  <div className="bg-green-500 h-2 rounded-full" style={{ width: "87%" }}></div>
-                </div>
-              </Box>
-
-              {/* Active Anomalies */}
-              <Box title="Active Anomalies">
-                <p className="text-purple-600 font-bold text-2xl">11</p>
-                <p className="text-gray-600">Detected patterns</p>
               </Box>
             </div>
 
@@ -513,45 +494,7 @@ function AdminDashboard() {
               </Box>
             </div>
 
-            {/* 🔹 Anomaly Detection + ML Performance */}
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              <Box title="Anomaly Detection Results">
-                <Bar
-                  data={{
-                    labels: ["Tilt-001", "Piezo-002", "Vib-003", "Crack-004"],
-                    datasets: [
-                      {
-                        label: "Anomalies",
-                        data: [3, 1, 6, 2],
-                        backgroundColor: "red",
-                      },
-                    ],
-                  }}
-                  options={{
-                    responsive: true,
-                    plugins: { legend: { display: false } },
-                  }}
-                />
-              </Box>
-
-              <Box title="ML Model Performance">
-                <Doughnut
-                  data={{
-                    labels: ["Precision", "Recall", "F1-Score", "Accuracy"],
-                    datasets: [
-                      {
-                        data: [92, 89, 90, 94],
-                        backgroundColor: ["#3b82f6", "#10b981", "#f59e0b", "#8b5cf6"],
-                      },
-                    ],
-                  }}
-                  options={{
-                    responsive: true,
-                    plugins: { legend: { position: "bottom" } },
-                  }}
-                />
-              </Box>
-            </div>
+            {/* 🔹 Removed Anomaly Detection Results & ML Model Performance as requested */}
 
             {/* 🔹 AI Recommendations */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -574,7 +517,7 @@ function AdminDashboard() {
           </div>
         );
 
-      // ---------------- Personnel Tracking (FULL) ----------------
+      // personnel, risk, alert cases remain unchanged...
       case "personnel":
         return (
           <div className="space-y-6">
