@@ -20,7 +20,7 @@ export default function Dashboard() {
   useEffect(() => {
     async function fetchData() {
       try {
-        const resp = await fetch("http://localhost:8000/api/telemetry");
+        const resp = await fetch("https://rockfall-backend.onrender.com/api/telemetry");
         const data = await resp.json();
 
         setTelemetry({
@@ -48,7 +48,7 @@ export default function Dashboard() {
 
   // ✅ WebSocket (live updates)
   useEffect(() => {
-    const ws = new WebSocket("ws://localhost:8000");
+    const ws = new WebSocket("wss://rockfall-backend.onrender.com/ws");
     ws.onmessage = (msg) => {
       try {
         const data = JSON.parse(msg.data);
