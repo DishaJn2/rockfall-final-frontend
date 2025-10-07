@@ -50,7 +50,7 @@ function Meter({ label, value, percent, color = "#34D399" }) {
 // ==========================================================
 async function fetchAIResponse(query, history) {
   try {
-    const res = await fetch("http://localhost:8000/api/assistant", {
+    const res = await fetch("https://rockfall-backend.onrender.com/api/assistant", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ query, history }),
@@ -155,7 +155,7 @@ export default function Overview() {
   // ==========================================================
   useEffect(() => {
     function fetchTelemetry(lat, lon) {
-      fetch(`http://localhost:8000/api/telemetry?lat=${lat}&lon=${lon}`)
+     fetch(`https://rockfall-backend.onrender.com/api/telemetry?lat=${lat}&lon=${lon}`)
         .then((res) => res.json())
         .then((data) => setTelemetry(data))
         .catch((err) => console.error("Telemetry fetch error:", err));

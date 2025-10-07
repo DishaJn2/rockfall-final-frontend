@@ -318,7 +318,6 @@ wss.on("connection", (ws) => {
 server.listen(PORT, () => {
   console.log(`✅ Realtime telemetry server running at http://localhost:${PORT}`);
 });
-
 server.on("error", (err) => {
   if (err.code === "EADDRINUSE") {
     console.error(`❌ Port ${PORT} already in use. Please stop other process or change PORT.`);

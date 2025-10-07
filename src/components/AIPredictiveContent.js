@@ -25,9 +25,7 @@ export default function ScenarioComparison() {
     if (mode === "scenario") {
       async function fetchData() {
         try {
-          const res = await axios.get(
-            "http://localhost:8000/api/risk?lat=26.9124&lon=75.7873"
-          );
+          const res = await axios.get("https://rockfall-backend.onrender.com/api/risk?lat=26.9124&lon=75.7873");
           const d = res.data;
           setRawData({
             temperature: d.weather?.temperature_c ?? 0,
@@ -50,9 +48,7 @@ export default function ScenarioComparison() {
     if (mode === "replay") {
       async function fetchReplay() {
         try {
-          const res = await axios.get(
-            `http://localhost:8000/api/historic-replay?year=${year}&month=${month}`
-          );
+          const res = await axios.get(`https://rockfall-backend.onrender.com/api/historic-replay?year=${year}&month=${month}`);
           setHistoricData(res.data.replay || []);
           setSummary(res.data.summary || null);
         } catch (err) {

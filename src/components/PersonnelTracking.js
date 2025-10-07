@@ -47,11 +47,9 @@ export default function PersonnelTracking() {
     setLoading(true);
     const q = new URLSearchParams({ count: String(count) });
     if (o) q.set("only", o);
-
-    const a = await fetch(`http://localhost:8000/api/personnel/live?${q}`).then(
-      (r) => r.json()
-    );
-
+    const a = await fetch(`https://rockfall-backend.onrender.com/api/personnel/live?${q}`).then(
+  (r) => r.json()
+);
     setLive(a);
 
     setTrend((prev) => [

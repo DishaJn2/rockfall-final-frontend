@@ -3,7 +3,7 @@ import React, { useState } from "react";
 
 async function fetchAIResponse(query, history) {
   try {
-    const res = await fetch("http://localhost:8000/api/assistant", {
+    const res = await fetch("https://rockfall-backend.onrender.com/api/assistant", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ query, history }),

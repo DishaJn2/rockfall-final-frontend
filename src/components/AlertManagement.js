@@ -9,7 +9,7 @@ export default function AlertManagement() {
   useEffect(() => {
     const fetchAlerts = async () => {
       try {
-        const res = await fetch("http://localhost:8000/api/alerts");
+        const res = await fetch("https://rockfall-backend.onrender.com/api/alerts");
         const data = await res.json();
         setAlertsData(data.alerts || []);
       } catch (err) {
@@ -24,8 +24,7 @@ export default function AlertManagement() {
 
   // ✅ Connect WebSocket for live alerts
   useEffect(() => {
-    const ws = new WebSocket("ws://localhost:8000");
-
+   const ws = new WebSocket("wss://rockfall-backend.onrender.com/ws");
     ws.onopen = () => {
       console.log("✅ Connected to Alert WebSocket");
     };

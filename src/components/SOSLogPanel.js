@@ -8,7 +8,7 @@ export default function SOSLogPanel() {
   const fetchLogs = async () => {
     try {
       setLoading(true);
-      const r = await fetch("http://localhost:8000/api/alerts/logs?limit=100");
+      const r = await fetch("https://rockfall-backend.onrender.com/api/alerts/logs?limit=100");
       const j = await r.json();
       if (j.ok) setItems(j.items || []);
     } catch (e) {
@@ -25,12 +25,12 @@ export default function SOSLogPanel() {
   }, []);
 
   const clearLogs = async () => {
-    await fetch("http://localhost:8000/api/alerts/logs", { method: "DELETE" });
+    await fetch("https://rockfall-backend.onrender.com/api/alerts/logs", { method: "DELETE" });
     fetchLogs();
   };
 
   const testHigh = async () => {
-    await fetch("http://localhost:8000/api/alerts/test?level=HIGH");
+    await fetch("https://rockfall-backend.onrender.com/api/alerts/test?level=HIGH");
     fetchLogs();
   };
 

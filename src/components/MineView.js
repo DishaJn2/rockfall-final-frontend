@@ -7,7 +7,8 @@ import {
   useJsApiLoader,
 } from "@react-google-maps/api";
 
-const API_BASE = "http://localhost:8000"; // change if needed
+const API_BASE = "https://rockfall-backend.onrender.com";
+ // change if needed
 function slopeColor(deg) {
   if (deg < 15) return "#10b981";   // green
   if (deg < 30) return "#f59e0b";   // orange
@@ -52,7 +53,7 @@ export default function MineView() {
   useEffect(() => {
     const fetchCitiesRisk = async () => {
       try {
-        const resp = await fetch("http://localhost:8000/api/cities-risk");
+        const resp = await fetch("https://rockfall-backend.onrender.com/api/cities-risk");
         const data = await resp.json();
         if (data.results) {
           const updated = data.results.map((c, i) => ({
@@ -80,8 +81,8 @@ export default function MineView() {
   const fetchWeather = useCallback(async (lat, lon) => {
     try {
       const resp = await fetch(
-        `http://localhost:8000/api/telemetry?lat=${lat}&lon=${lon}`
-      );
+  `https://rockfall-backend.onrender.com/api/telemetry?lat=${lat}&lon=${lon}`
+);
       const data = await resp.json();
       setWeather({
         temp: data.weather?.temperature_c ?? "--",
