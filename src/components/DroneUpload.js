@@ -10,7 +10,6 @@ import {
   Tooltip,
   CartesianGrid,
 } from "recharts";
-import ReactSpeedometer from "react-d3-speedometer";
 
 // 3D imports
 import { Canvas } from "@react-three/fiber";
