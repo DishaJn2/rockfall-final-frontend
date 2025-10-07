@@ -10,8 +10,6 @@ import {
   Tooltip,
   CartesianGrid,
 } from "recharts";
-import ReactSpeedometer from "react-d3-speedometer";
-
 // Lazy load 3D scene
 const ThreeSlopeScene = lazy(() => import("./ThreeSlopeScene"));
 
